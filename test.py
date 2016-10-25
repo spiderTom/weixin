@@ -1,5 +1,8 @@
 
 import requests
+from lxml import etree
+
+root = etree.Element("root")
 
 cs_url = 'https://leetcode.com/articles/remove-nth-node-end-list/'
 cs = 'https://github.com/session'
