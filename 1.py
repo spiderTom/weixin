@@ -4,7 +4,8 @@ import re
 import string
 
 
-http_proxy = {"http": 'http://10.144.1.10:8080'}
+http_proxy = {"http": 'http://10.144.1.10:8080',
+              "https": 'https://10.144.1.10:8080'}
 search_url = 'http://weixin.sogou.com/weixin?type=1&query='
 public_url = ''
 prefix_url = 'http://mp.weixin.qq.com'
@@ -20,8 +21,8 @@ my_headers = {
 sss = requests.Session()
 target_url = search_url + "python_friend"
 print target_url
-#r = sss.get(target_url, headers=my_headers, proxies=http_proxy)
-r = sss.get(target_url, headers=my_headers)
+r = sss.get(target_url, headers=my_headers, proxies=http_proxy)
+#r = sss.get(target_url, headers=my_headers)
 print r.url, r.status_code, r.history
 f = open('test.html','w+')
 f.write(r.content)
@@ -41,8 +42,8 @@ for line in lines:
         public_url = line
 
 my_headers['Referer'] = search_url + "python_friend"
-#r = sss.get(public_url, headers=my_headers, proxies=http_proxy)
-r = sss.get(public_url, headers=my_headers)
+r = sss.get(public_url, headers=my_headers, proxies=http_proxy)
+#r = sss.get(public_url, headers=my_headers)
 print r.url, r.status_code, r.history
 f = open('test2.html','w+')
 f.write(r.content)
@@ -81,9 +82,14 @@ while current != -1:
     target_url = target_url[current:]
     i += 1
 
+i = 0
 for item in names:
     item = prefix_url + item
     print item
-#f = open('test.txt','w+')
-#f.write(target_url)
-#f.close()
+    r = sss.get(item, headers=my_headers, proxies=http_proxy)
+    filename = str(i) + ".html"
+    print "filename: " + filename
+    f = open(filename,'w+')
+    f.write(r.content)
+    f.close()
+    i += 1
